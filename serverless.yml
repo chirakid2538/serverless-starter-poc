@@ -1,7 +1,7 @@
 org: chirakid
 app: serverless-starter-poc
 service: serverless-starter-poc
-frameworkVersion: '3'
+frameworkVersion: "3"
 
 plugins:
   - serverless-offline
@@ -10,7 +10,13 @@ provider:
   name: aws
   runtime: nodejs18.x
 
+custom:
+  serverless-offline:
+    httpPort: 4000
+    
 functions:
+  authorizerViaIDToken:
+    handler: authorizer.viaIDToken
   function1:
     handler: index.handler
   test:
@@ -20,3 +26,8 @@ functions:
           path: test/status
           method: get
           cors: true
+      - http:
+          path: test/status/internal
+          method: get
+          cors: true
+          authorizer: authorizerViaIDToken
